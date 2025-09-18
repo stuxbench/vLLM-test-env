@@ -14,6 +14,7 @@ import typing
 import vllm.env_override  # noqa: F401
 
 MODULE_ATTRS = {
+    "TestField": ".test_field:test_value",
     "bc_linter_skip": "._bc_linter:bc_linter_skip",
     "bc_linter_include": "._bc_linter:bc_linter_include",
     "AsyncEngineArgs": ".engine.arg_utils:AsyncEngineArgs",

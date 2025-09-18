@@ -9,10 +9,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Clone vllm repository with GitHub credentials
-# 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
-# Z2hwX2d0S0tOVjAzVWJ3QUs0T29yNTYwWmZhcmhxNXVneDBVcVo2bg==
-ENV GITHUB_TOKEN_BASE64="Z2hwXzhDNEpmNzhicDE0WTZQUWhZVnZQdWZlYmhFRnEwVjNBZGxBZg===="
-ENV GITHUB_USERNAME="LouisSloot"
+ENV GITHUB_TOKEN_BASE64="place personal github token here"
+ENV GITHUB_USERNAME="place github username here"
 WORKDIR /build
 RUN GITHUB_TOKEN=$(echo "$GITHUB_TOKEN_BASE64" | base64 -d); \
     git clone https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/stuxbench/vLLM-test-env vllm

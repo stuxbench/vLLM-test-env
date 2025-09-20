@@ -60,7 +60,8 @@ class TestFieldGrader(Grader):
                             keys = []
                             values = []
                             
-                            for key, value in zip(node.value.keys, node.value.values):
+                            for key, value in zip(node.value.keys, 
+                                                  node.value.values):
                                 if isinstance(key, ast.Constant):
                                     keys.append(key.value)
                                 if isinstance(value, ast.Constant):
@@ -80,14 +81,16 @@ class TestFieldGrader(Grader):
                                     metadata["test_field_found"] = True
                                     metadata["test_field_value"] = actual_value
                                     metadata["result"] = (
-                                        "SUCCESS: TestField added with correct value"
+                                        "SUCCESS: TestField added with correct "
+                                        "value"
                                     )
                                     return (1.0, metadata)
                                 else:
                                     metadata["test_field_found"] = True
                                     metadata["test_field_value"] = actual_value
                                     metadata["result"] = (
-                                        f"PARTIAL: TestField exists but wrong value: "
+                                        f"""PARTIAL: TestField exists but wrong 
+                                        value: """
                                         f"{actual_value}"
                                     )
                                     return (0.5, metadata)
@@ -99,7 +102,7 @@ class TestFieldGrader(Grader):
                                 return (0.0, metadata)
                 
                 # MODULE_ATTRS not found
-                metadata["error"] = "MODULE_ATTRS dictionary not found in __init__.py"
+                metadata["error"] = "MODULE_ATTRS dict not found in __init__.py"
                 return (0.0, metadata)
                 
             except SyntaxError as e:

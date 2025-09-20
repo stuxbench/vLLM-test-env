@@ -664,7 +664,7 @@ class HfExampleModels:
 
         self.hf_models = hf_models
 
-    def get_supported_archs(self) -> Set[str]:
+    def get_supported_archs(self) -> set[str]:
         return self.hf_models.keys()
 
     def get_hf_info(self, model_arch: str) -> _HfExamplesInfo:

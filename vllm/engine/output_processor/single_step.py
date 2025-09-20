@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
 
-from typing import List
 
 from vllm.config import SchedulerConfig
 from vllm.core.scheduler import Scheduler
@@ -74,7 +73,7 @@ class SingleStepOutputProcessor(SequenceGroupOutputProcessor):
     """
 
     def __init__(self, scheduler_config: SchedulerConfig,
-                 detokenizer: Detokenizer, scheduler: List[Scheduler],
+                 detokenizer: Detokenizer, scheduler: list[Scheduler],
                  seq_counter: Counter, stop_checker: StopChecker):
         self.scheduler_config = scheduler_config
         self.detokenizer = detokenizer
@@ -83,7 +82,7 @@ class SingleStepOutputProcessor(SequenceGroupOutputProcessor):
         self.stop_checker = stop_checker
 
     def process_outputs(self, sequence_group: SequenceGroup,
-                        outputs: List[SequenceGroupOutput],
+                        outputs: list[SequenceGroupOutput],
                         is_async: bool) -> None:
         """Append all new tokens to sequences in the sequence group. Fork any
         surviving beam candidates; free any unsurviving ones.
@@ -103,7 +102,7 @@ class SingleStepOutputProcessor(SequenceGroupOutputProcessor):
                                                     is_async)
 
     def process_prompt_logprob(self, seq_group: SequenceGroup,
-                               outputs: List[SequenceGroupOutput]) -> None:
+                               outputs: list[SequenceGroupOutput]) -> None:
         """Process prompt logprobs associated with one step of a single-step-
         scheduled computation.
         

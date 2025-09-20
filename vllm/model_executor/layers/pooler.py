@@ -102,7 +102,7 @@ class Pooler(nn.Module, ABC):
         )
 
     @abstractmethod
-    def get_supported_tasks(self) -> Set[PoolingTask]:
+    def get_supported_tasks(self) -> set[PoolingTask]:
         """Determine which pooling tasks are supported."""
         raise NotImplementedError
 
@@ -218,7 +218,7 @@ class PoolingMethod(nn.Module, ABC):
         raise NotImplementedError(f"Unsupported method: {pooling_type}")
 
     @abstractmethod
-    def get_supported_tasks(self) -> Set[PoolingTask]:
+    def get_supported_tasks(self) -> set[PoolingTask]:
         raise NotImplementedError
 
     def get_pooling_updates(self, task: PoolingTask) -> PoolingParamsUpdate:
@@ -243,7 +243,7 @@ class PoolingMethod(nn.Module, ABC):
 
 class CLSPool(PoolingMethod):
 
-    def get_supported_tasks(self) -> Set[PoolingTask]:
+    def get_supported_tasks(self) -> set[PoolingTask]:
         return {"encode", "embed", "classify", "score"}
 
     def forward_all(
@@ -259,7 +259,7 @@ class CLSPool(PoolingMethod):
 
 class LastPool(PoolingMethod):
 
-    def get_supported_tasks(self) -> Set[PoolingTask]:
+    def get_supported_tasks(self) -> set[PoolingTask]:
         return {"encode", "embed", "classify", "score"}
 
     def forward_all(
@@ -272,7 +272,7 @@ class LastPool(PoolingMethod):
 
 class AllPool(PoolingMethod):
 
-    def get_supported_tasks(self) -> Set[PoolingTask]:
+    def get_supported_tasks(self) -> set[PoolingTask]:
         return {"encode"}
 
     def forward_all(
@@ -292,7 +292,7 @@ class AllPool(PoolingMethod):
 
 class MeanPool(PoolingMethod):
 
-    def get_supported_tasks(self) -> Set[PoolingTask]:
+    def get_supported_tasks(self) -> set[PoolingTask]:
         return {"encode", "embed", "classify", "score"}
 
     def forward_all(
@@ -546,7 +546,7 @@ class SimplePooler(Pooler):
         self.pooling = pooling
         self.head = head
 
-    def get_supported_tasks(self) -> Set[PoolingTask]:
+    def get_supported_tasks(self) -> set[PoolingTask]:
         return self.pooling.get_supported_tasks()
 
     def get_pooling_updates(self, task: PoolingTask) -> PoolingParamsUpdate:
@@ -597,7 +597,7 @@ class StepPooler(Pooler):
 
         return pooled_data
 
-    def get_supported_tasks(self) -> Set[PoolingTask]:
+    def get_supported_tasks(self) -> set[PoolingTask]:
         return {"encode"}
 
     def get_pooling_updates(self, task: PoolingTask) -> PoolingParamsUpdate:
@@ -648,7 +648,7 @@ class ClassifierPooler(Pooler):
             float] = vllm_config.model_config.pooler_config.logit_bias
         self.head_dtype = vllm_config.model_config.head_dtype
 
-    def get_supported_tasks(self) -> Set[PoolingTask]:
+    def get_supported_tasks(self) -> set[PoolingTask]:
         return {"classify", "score"}
 
     def forward(
@@ -699,7 +699,7 @@ class DispatchPooler(Pooler):
 
         self.poolers_by_task = poolers_by_task
 
-    def get_supported_tasks(self) -> Set[PoolingTask]:
+    def get_supported_tasks(self) -> set[PoolingTask]:
         return set(self.poolers_by_task)
 
     def get_pooling_updates(self, task: PoolingTask) -> PoolingParamsUpdate:

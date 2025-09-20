@@ -40,7 +40,7 @@ WORKDIR /build/vllm
 # RUN git add .
 # RUN git commit -m "Initial commit"
 
-# Skip vLLM build for now - just need source files for file editing task
+# build vLLM
 # RUN pip3 install --break-system-packages wheel setuptools cmake ninja
 # RUN pip3 install --break-system-packages --no-cache-dir -e .
 

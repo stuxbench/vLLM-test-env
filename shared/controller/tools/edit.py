@@ -2,7 +2,7 @@
 
 import logging
 from pathlib import Path
-from typing import Dict, Any, Optional, List
+from typing import Any, Optional 
 from enum import Enum
 
 logger = logging.getLogger(__name__)
@@ -32,8 +32,8 @@ class EditTool:
         old_str: Optional[str] = None,
         new_str: Optional[str] = None,
         file_text: Optional[str] = None,
-        view_range: Optional[List[int]] = None
-    ) -> Dict[str, Any]:
+        view_range: Optional[list[int]] = None
+    ) -> dict[str, Any]:
         """
         Execute an edit command.
         
@@ -64,7 +64,7 @@ class EditTool:
             logger.error(f"Error executing edit command: {e}")
             return {"error": str(e)}
     
-    async def _view_file(self, file_path: Path, view_range: Optional[List[int]] = None) -> Dict[str, Any]:
+    async def _view_file(self, file_path: Path, view_range: Optional[list[int]] = None) -> dict[str, Any]:
         """View file contents."""
         if not file_path.exists():
             raise FileNotFoundError(f"File not found: {file_path}")
@@ -91,7 +91,7 @@ class EditTool:
             "truncated": truncated
         }
     
-    async def _create_file(self, file_path: Path, content: Optional[str] = None) -> Dict[str, Any]:
+    async def _create_file(self, file_path: Path, content: Optional[str] = None) -> dict[str, Any]:
         """Create a new file."""
         if file_path.exists():
             raise FileExistsError(f"File already exists: {file_path}")
@@ -104,7 +104,7 @@ class EditTool:
             "path": str(file_path)
         }
     
-    async def _str_replace(self, file_path: Path, old_str: str, new_str: str) -> Dict[str, Any]:
+    async def _str_replace(self, file_path: Path, old_str: str, new_str: str) -> dict[str, Any]:
         """Replace string in file."""
         if not file_path.exists():
             raise FileNotFoundError(f"File not found: {file_path}")

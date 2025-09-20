@@ -3,7 +3,7 @@ import sys
 import os
 import logging
 from pathlib import Path
-from typing import Optional, Dict, Any
+from typing import Optional, Any
 
 sys.path.insert(0, '/app')
 
@@ -31,7 +31,7 @@ async def bash(
     command: str,
     timeout: int = 30,
     cwd: Optional[str] = None
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Execute bash commands for testing and exploration."""
     return await bash_tool(command=command, timeout=timeout, cwd=cwd)
 
@@ -43,7 +43,7 @@ async def edit(
     new_str: Optional[str] = None,
     file_text: Optional[str] = None,
     view_range: Optional[list] = None
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Edit or view files for vulnerability patching.
     
     IMPORTANT: The 'command' parameter must be one of these exact strings:

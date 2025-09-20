@@ -270,7 +270,7 @@ class ModernBertPooler(Pooler):
                                  eps=config.norm_eps,
                                  bias=config.norm_bias)
 
-    def get_supported_tasks(self) -> Set[PoolingTask]:
+    def get_supported_tasks(self) -> set[PoolingTask]:
         return self.pooling.get_supported_tasks()
 
     def get_pooling_updates(self, task: PoolingTask) -> PoolingParamsUpdate:

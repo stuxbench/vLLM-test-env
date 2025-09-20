@@ -10,7 +10,7 @@ import json
 import sys
 from dataclasses import MISSING, dataclass, fields, is_dataclass
 from itertools import permutations
-from typing import (TYPE_CHECKING, Annotated, Any, Callable, Dict, List,
+from typing import (TYPE_CHECKING, Annotated, Any, Callable, 
                     Literal, Optional, Type, TypeVar, Union, cast, get_args,
                     get_origin)
 
@@ -286,7 +286,7 @@ class EngineArgs:
     """Arguments for vLLM engine."""
     model: str = ModelConfig.model
     served_model_name: Optional[Union[
-        str, List[str]]] = ModelConfig.served_model_name
+        str, list[str]]] = ModelConfig.served_model_name
     tokenizer: Optional[str] = ModelConfig.tokenizer
     hf_config_path: Optional[str] = ModelConfig.hf_config_path
     runner: RunnerOption = ModelConfig.runner
@@ -377,7 +377,7 @@ class EngineArgs:
     media_io_kwargs: dict[str, dict[str,
                                     Any]] = get_field(MultiModalConfig,
                                                       "media_io_kwargs")
-    mm_processor_kwargs: Optional[Dict[str, Any]] = \
+    mm_processor_kwargs: Optional[dict[str, Any]] = \
         MultiModalConfig.mm_processor_kwargs
     disable_mm_preprocessor_cache: bool = False  # DEPRECATED
     mm_processor_cache_gb: float = MultiModalConfig.mm_processor_cache_gb
@@ -393,7 +393,7 @@ class EngineArgs:
     enable_lora_bias: bool = LoRAConfig.bias_enabled
     max_loras: int = LoRAConfig.max_loras
     max_lora_rank: int = LoRAConfig.max_lora_rank
-    default_mm_loras: Optional[Dict[str, str]] = \
+    default_mm_loras: Optional[dict[str, str]] = \
         LoRAConfig.default_mm_loras
     fully_sharded_loras: bool = LoRAConfig.fully_sharded_loras
     max_cpu_loras: Optional[int] = LoRAConfig.max_cpu_loras
@@ -407,7 +407,7 @@ class EngineArgs:
     model_loader_extra_config: dict = \
         get_field(LoadConfig, "model_loader_extra_config")
     ignore_patterns: Optional[Union[str,
-                                    List[str]]] = LoadConfig.ignore_patterns
+                                    list[str]]] = LoadConfig.ignore_patterns
     preemption_mode: Optional[str] = SchedulerConfig.preemption_mode
 
     scheduler_delay_factor: float = SchedulerConfig.delay_factor
@@ -427,7 +427,7 @@ class EngineArgs:
     logits_processor_pattern: Optional[
         str] = ModelConfig.logits_processor_pattern
 
-    speculative_config: Optional[Dict[str, Any]] = None
+    speculative_config: Optional[dict[str, Any]] = None
 
     show_hidden_metrics_for_version: Optional[str] = \
         ObservabilityConfig.show_hidden_metrics_for_version

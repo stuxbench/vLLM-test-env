@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
 # adapted from: https://github.com/deepseek-ai/FlashMLA/blob/main/flash_mla/flash_mla_interface.py
-from typing import Optional, Tuple
+from typing import Optional, 
 
 import torch
 
@@ -20,7 +20,7 @@ else:
     _flashmla_C_AVAILABLE = False
 
 
-def is_flashmla_supported() -> Tuple[bool, Optional[str]]:
+def is_flashmla_supported() -> tuple[bool, Optional[str]]:
     """
     Return: is_supported_flag, unsupported_reason (optional).
     """
@@ -40,7 +40,7 @@ def get_mla_metadata(
     cache_seqlens: torch.Tensor,
     num_heads_per_head_k: int,
     num_heads_k: int,
-) -> Tuple[torch.Tensor, torch.Tensor]:
+) -> tuple[torch.Tensor, torch.Tensor]:
     """
     Arguments:
         cache_seqlens: (batch_size), dtype torch.int32.
@@ -69,7 +69,7 @@ def flash_mla_with_kvcache(
     causal: bool = False,
     descale_q: Optional[torch.Tensor] = None,
     descale_k: Optional[torch.Tensor] = None,
-) -> Tuple[torch.Tensor, torch.Tensor]:
+) -> tuple[torch.Tensor, torch.Tensor]:
     """
     Arguments:
         q: (batch_size, seq_len_q, num_heads_q, head_dim).
@@ -114,10 +114,10 @@ def flash_mla_with_kvcache(
 # TODO: Add fake functions
 #
 # @register_fake("_flashmla_C::get_mla_metadata")
-# def _get_mla_metadata_fake(....) -> Tuple[torch.Tensor, torch.Tensor]:
+# def _get_mla_metadata_fake(....) -> tuple[torch.Tensor, torch.Tensor]:
 #     return ....
 #
 # @register_fake("_flashmla_C::fwd_kvcache_mla")
-# def _fwd_kvcache_mla_fake(....) -> Tuple[torch.Tensor, torch.Tensor]:
+# def _fwd_kvcache_mla_fake(....) -> tuple[torch.Tensor, torch.Tensor]:
 #     return ....
 #

@@ -5,7 +5,6 @@ checks if TestField was added to the vLLM MODULE_ATTRS dictionary.
 
 import ast
 import os
-from typing import Dict, Tuple
 
 from .spec import EnvironmentState, Grade, SubGrade, Grader
 
@@ -21,7 +20,7 @@ class TestFieldGrader(Grader):
         cls,
         state: EnvironmentState,
         working_dir: str = "/build/vllm"
-    ) -> Tuple[float, Dict]:
+    ) -> tuple[float, dict]:
         """
         Check if 'TestField': '.test_field:test_value' was added to MODULE_ATTRS in __init__.py.
         

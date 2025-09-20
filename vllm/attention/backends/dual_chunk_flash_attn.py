@@ -4,7 +4,7 @@
 """
 import math
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Type
+from typing import TYPE_CHECKING, Any, Optional, Type
 
 import torch
 import torch.distributed
@@ -64,7 +64,7 @@ class DualChunkFlashAttentionMetadata(FlashAttentionMetadata):
     local_size: int = 1024
 
     # (batch_size,). The orig sequence length per sequence.
-    orig_seq_lens: Optional[List[int]] = None
+    orig_seq_lens: Optional[list[int]] = None
 
     # orig_seq_lens stored as a tensor.
     orig_seq_lens_tensor: Optional[torch.Tensor] = None
@@ -222,7 +222,7 @@ class DualChunkFlashAttentionMetadataBuilder(FlashAttentionMetadataBuilder):
 
     def prepare(self):
         super().prepare()
-        self.orig_seq_lens: List[int] = []
+        self.orig_seq_lens: list[int] = []
 
     def _add_seq_group(
             self, inter_data: "ModelInputForGPUBuilder.InterDataForSeqGroup",
@@ -233,7 +233,7 @@ class DualChunkFlashAttentionMetadataBuilder(FlashAttentionMetadataBuilder):
                                        inter_data.seq_lens):
             self.orig_seq_lens.append(max(prompt_len, seq_len))
 
-    def build(self, seq_lens: List[int], query_lens: List[int],
+    def build(self, seq_lens: list[int], query_lens: list[int],
               cuda_graph_pad_size: int, batch_size: int):
         attn_metadata = super().build(seq_lens, query_lens,
                                       cuda_graph_pad_size, batch_size)
@@ -284,14 +284,14 @@ class DualChunkFlashAttentionImpl(FlashAttentionImpl):
         head_size: int,
         scale: float,
         num_kv_heads: int,
-        alibi_slopes: Optional[List[float]],
+        alibi_slopes: Optional[list[float]],
         sliding_window: Optional[int],
         kv_cache_dtype: str,
         logits_soft_cap: Optional[float] = None,
         attn_type: str = AttentionType.DECODER,
         kv_sharing_target_layer_name: Optional[str] = None,
         layer_idx: int = -1,
-        dual_chunk_attention_config: Optional[Dict[str, Any]] = None,
+        dual_chunk_attention_config: Optional[dict[str, Any]] = None,
     ) -> None:
         if kv_sharing_target_layer_name is not None:
             raise NotImplementedError("KV sharing is not supported in V0 "
@@ -558,11 +558,11 @@ class DualChunkFlashAttentionImpl(FlashAttentionImpl):
         v,
         cu_seqlens_q,
         cu_seqlens_k,
-        orig_seq_lens: List[int],
+        orig_seq_lens: list[int],
         scaling_factor: torch.Tensor,
         softmax_scale: float,
         causal: Optional[bool] = True,
-        window_size: Tuple[int, int] = (-1, -1),
+        window_size: tuple[int, int] = (-1, -1),
         alibi_slopes: Optional[torch.Tensor] = None,
         block_table: Optional[torch.Tensor] = None,
         chunk_size: int = 8192,
@@ -1232,7 +1232,7 @@ class DualChunkFlashAttentionImpl(FlashAttentionImpl):
 
     def _merge_attn_outputs(
         self,
-        flash_results: List[List[Tuple[torch.Tensor, torch.Tensor]]],
+        flash_results: list[list[tuple[torch.Tensor, torch.Tensor]]],
         return_lse: Optional[bool] = False,
     ) -> torch.Tensor:
         attn_outputs_all = []

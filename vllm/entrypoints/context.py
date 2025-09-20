@@ -339,7 +339,7 @@ class HarmonyContext(ConversationContext):
             - for tool name: exec
                 - args:
                     {
-                        "cmd":List[str] "command to execute",
+                        "cmd":list[str] "command to execute",
                         "workdir":optional[str] "current working directory",
                         "env":optional[object/dict] "environment variables",
                         "session_name":optional[str] "session name",

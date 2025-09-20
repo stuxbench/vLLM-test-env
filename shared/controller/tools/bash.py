@@ -3,7 +3,7 @@
 import asyncio
 import logging
 import subprocess
-from typing import Dict, Any
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +19,7 @@ class BashTool:
         command: str,
         timeout: int = 30,
         cwd: str = None
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Execute a bash command.
         

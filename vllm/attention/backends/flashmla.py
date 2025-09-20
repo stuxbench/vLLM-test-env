@@ -3,7 +3,7 @@
 
 from contextlib import contextmanager
 from dataclasses import dataclass
-from typing import List, Optional, Tuple, Type
+from typing import Optional, Type
 
 import torch
 
@@ -44,7 +44,7 @@ class FlashMLABackend(MLACommonBackend):
 
 @dataclass
 class FlashMLAMetadata(MLACommonMetadata):
-    decode_tile_scheduler_metadata: Optional[Tuple[torch.Tensor,
+    decode_tile_scheduler_metadata: Optional[tuple[torch.Tensor,
                                                    torch.Tensor]] = None
     decode_num_splits: Optional[torch.Tensor] = None
 
@@ -68,7 +68,7 @@ class FlashMLAMetadataBuilder(MLACommonMetadataBuilder[FlashMLAMetadata]):
         self.num_q_heads = self.runner.model_config.get_num_attention_heads(
             self.runner.parallel_config)
 
-    def build(self, seq_lens: List[int], query_lens: List[int],
+    def build(self, seq_lens: list[int], query_lens: list[int],
               cuda_graph_pad_size: int, batch_size: int):
         m = super().build(seq_lens, query_lens, cuda_graph_pad_size,
                           batch_size)
@@ -165,7 +165,7 @@ class FlashMLAImpl(MLACommonImpl[FlashMLAMetadata]):
             head_size: int,
             scale: float,
             num_kv_heads: int,
-            alibi_slopes: Optional[List[float]],
+            alibi_slopes: Optional[list[float]],
             sliding_window: Optional[int],
             kv_cache_dtype: str,
             logits_soft_cap: Optional[float],

@@ -193,7 +193,7 @@ from collections import defaultdict
 from contextlib import contextmanager
 from dataclasses import dataclass
 from itertools import accumulate
-from typing import (TYPE_CHECKING, Any, Dict, Generic, List, Optional, Tuple,
+from typing import (TYPE_CHECKING, Any, Generic, Optional, 
                     Type, TypeVar)
 
 import torch
@@ -263,7 +263,7 @@ class MLACommonBackend(AttentionBackend):
         block_size: int,
         num_kv_heads: int,  # assumed to be 1 for MLA
         head_size: int,
-    ) -> Tuple[int, ...]:
+    ) -> tuple[int, ...]:
         return (num_blocks, block_size, head_size)
 
     @staticmethod
@@ -276,13 +276,13 @@ class MLACommonBackend(AttentionBackend):
 
     @staticmethod
     def copy_blocks(
-        kv_caches: List[torch.Tensor],
+        kv_caches: list[torch.Tensor],
         src_to_dists: torch.Tensor,
     ) -> None:
         ops.copy_blocks_mla(kv_caches, src_to_dists)
 
     @staticmethod
-    def get_supported_head_sizes() -> List[int]:
+    def get_supported_head_sizes() -> list[int]:
         return [576]
 
 
@@ -456,7 +456,7 @@ class MLACommonMetadata(AttentionMetadata):
 
     # (batch_size,). The sequence length per sequence. Sequence length means
     # the computed tokens + new tokens None if it is a decoding.
-    seq_lens: Optional[List[int]]
+    seq_lens: Optional[list[int]]
     # seq_lens stored as a tensor.
     seq_lens_tensor: Optional[torch.Tensor]
 
@@ -509,8 +509,8 @@ class MLACommonMetadata(AttentionMetadata):
     # For chunked prefill
     context_chunk_cu_seq_lens: Optional[torch.Tensor] = None
     context_chunk_starts: Optional[torch.Tensor] = None
-    context_chunk_seq_tot: Optional[List[int]] = None
-    context_chunk_max_seq_lens: Optional[List[int]] = None
+    context_chunk_seq_tot: Optional[list[int]] = None
+    context_chunk_max_seq_lens: Optional[list[int]] = None
     # Set by MLAAttentionState in `begin_forward` so it doesn't get broadcasted
     context_chunk_workspace: Optional[torch.Tensor] = None
 
@@ -655,12 +655,12 @@ class MLACommonMetadataBuilder(AttentionMetadataBuilder[T], Generic[T]):
             self.page_size = self.runner.block_size
 
     def prepare(self):
-        self.slot_mapping: List[int] = []
-        self.prefill_seq_lens: List[int] = []
-        self.context_lens: List[int] = []
-        self.block_tables: List[List[int]] = []
-        self.curr_seq_lens: List[int] = []
-        self.multimodal_placeholder_maps: Dict[
+        self.slot_mapping: list[int] = []
+        self.prefill_seq_lens: list[int] = []
+        self.context_lens: list[int] = []
+        self.block_tables: list[list[int]] = []
+        self.curr_seq_lens: list[int] = []
+        self.multimodal_placeholder_maps: dict[
             str,
             MultiModalPlaceholderMap] = defaultdict(MultiModalPlaceholderMap)
         self.num_prefills = 0
@@ -723,7 +723,7 @@ class MLACommonMetadataBuilder(AttentionMetadataBuilder[T], Generic[T]):
 
     def _get_graph_runner_block_tables(
             self, num_seqs: int,
-            block_tables: List[List[int]]) -> torch.Tensor:
+            block_tables: list[list[int]]) -> torch.Tensor:
         # The shape of graph_block_tables is
         # [max batch size, max context len // block size].
         max_batch_size, max_blocks = self.runner.graph_block_tables.shape
@@ -745,7 +745,7 @@ class MLACommonMetadataBuilder(AttentionMetadataBuilder[T], Generic[T]):
         return torch.from_numpy(graph_block_tables).to(
             device=self.runner.device, non_blocking=True)
 
-    def build(self, seq_lens: List[int], query_lens: List[int],
+    def build(self, seq_lens: list[int], query_lens: list[int],
               cuda_graph_pad_size: int, batch_size: int):
         """Build attention metadata with on-device tensors.
 
@@ -909,7 +909,7 @@ class MLACommonImpl(MLAAttentionImpl[T], Generic[T]):
         head_size: int,
         scale: float,
         num_kv_heads: int,
-        alibi_slopes: Optional[List[float]],
+        alibi_slopes: Optional[list[float]],
         sliding_window: Optional[int],
         kv_cache_dtype: str,
         logits_soft_cap: Optional[float],

@@ -405,7 +405,7 @@ def _get_tokenizer_without_image_pad(
         def tokenize(
             self,
             text: str,
-            allowed_special: Union[Set[str], str] = "all",
+            allowed_special: Union[set[str], str] = "all",
             disallowed_special: Union[Collection[str], str] = (),
             **kwargs,
         ) -> list[Union[bytes, str]]:

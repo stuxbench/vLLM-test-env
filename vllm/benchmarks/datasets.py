@@ -220,7 +220,7 @@ class BenchmarkDataset(ABC):
         number.
 
         Args:
-            requests (List[SampleRequest]): The current list of sampled
+            requests (list[SampleRequest]): The current list of sampled
                 requests.
             num_requests (int): The target number of requests.
             request_id_prefix (str): The prefix applied to generated request

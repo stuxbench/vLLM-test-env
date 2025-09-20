@@ -44,7 +44,7 @@ class LoRAResolver(ABC):
 class _LoRAResolverRegistry:
     resolvers: dict[str, LoRAResolver] = field(default_factory=dict)
 
-    def get_supported_resolvers(self) -> Set[str]:
+    def get_supported_resolvers(self) -> set[str]:
         """Get all registered resolver names."""
         return self.resolvers.keys()
 

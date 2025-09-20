@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
 
-from typing import List, Optional, Type
+from typing import Optional, Type
 
 import torch
 
@@ -32,7 +32,7 @@ class TritonMLAImpl(MLACommonImpl[MLACommonMetadata]):
             head_size: int,
             scale: float,
             num_kv_heads: int,
-            alibi_slopes: Optional[List[float]],
+            alibi_slopes: Optional[list[float]],
             sliding_window: Optional[int],
             kv_cache_dtype: str,
             logits_soft_cap: Optional[float],

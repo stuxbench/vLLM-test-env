@@ -84,7 +84,7 @@ class BertPooler(Pooler):
         self.dense = nn.Linear(config.hidden_size, config.hidden_size)
         self.activation = nn.Tanh()
 
-    def get_supported_tasks(self) -> Set[PoolingTask]:
+    def get_supported_tasks(self) -> set[PoolingTask]:
         return self.pooling.get_supported_tasks()
 
     def get_pooling_updates(self, task: PoolingTask) -> PoolingParamsUpdate:

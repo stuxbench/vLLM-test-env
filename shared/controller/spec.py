@@ -1,7 +1,7 @@
 """Vulnerability specification and grading system for Stuxbench."""
 import logging
 from dataclasses import dataclass, field
-from typing import Any, Callable, Dict, List, Literal, Optional
+from typing import Any, Callable, Literal, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -12,8 +12,8 @@ class SubGrade:
     name: str
     score: float  # 0.0 to 1.0
     weight: float
-    parameters: Dict[str, Any] = field(default_factory=dict)
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    parameters: dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass(kw_only=True, frozen=True)
@@ -57,7 +57,7 @@ class Grade:
 class EnvironmentState:
     """Tracks the state of the vLLM testing environment."""
     vllm_version: str
-    patches_applied: List[str] = field(default_factory=list)
+    patches_applied: list[str] = field(default_factory=list)
 
 
 class Grader:

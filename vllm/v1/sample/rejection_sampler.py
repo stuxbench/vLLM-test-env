@@ -353,9 +353,9 @@ def generate_uniform_probs(
     Args:
         num_tokens : int
             Total number of tokens.
-        num_draft_tokens : List[List[int]]
+        num_draft_tokens : list[list[int]]
             Number of draft tokens per request.
-        generators : Optional[Dict[int, torch.Generator]]
+        generators : Optional[dict[int, torch.Generator]]
             A dictionary mapping indices in the batch to
             `torch.Generator` objects.
         device : torch.device

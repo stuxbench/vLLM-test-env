@@ -3,7 +3,7 @@
 
 import time
 from typing import Counter as CollectionsCounter
-from typing import Dict, List, Optional, Type, Union, cast
+from typing import Optional, Type, Union, cast
 
 import numpy as np
 import prometheus_client
@@ -43,7 +43,7 @@ class Metrics:
     _counter_cls = prometheus_client.Counter
     _histogram_cls = prometheus_client.Histogram
 
-    def __init__(self, labelnames: List[str], vllm_config: VllmConfig):
+    def __init__(self, labelnames: list[str], vllm_config: VllmConfig):
         # Unregister any existing vLLM collectors (for CI/CD)
         self._unregister_vllm_metrics()
 
@@ -223,7 +223,7 @@ class _RayGaugeWrapper:
     def __init__(self,
                  name: str,
                  documentation: str = "",
-                 labelnames: Optional[List[str]] = None,
+                 labelnames: Optional[list[str]] = None,
                  multiprocess_mode: str = ""):
         del multiprocess_mode
         labelnames_tuple = tuple(labelnames) if labelnames else None
@@ -250,7 +250,7 @@ class _RayCounterWrapper:
     def __init__(self,
                  name: str,
                  documentation: str = "",
-                 labelnames: Optional[List[str]] = None):
+                 labelnames: Optional[list[str]] = None):
         labelnames_tuple = tuple(labelnames) if labelnames else None
         self._counter = ray_metrics.Counter(name=name,
                                             description=documentation,
@@ -273,8 +273,8 @@ class _RayHistogramWrapper:
     def __init__(self,
                  name: str,
                  documentation: str = "",
-                 labelnames: Optional[List[str]] = None,
-                 buckets: Optional[List[float]] = None):
+                 labelnames: Optional[list[str]] = None,
+                 buckets: Optional[list[float]] = None):
         labelnames_tuple = tuple(labelnames) if labelnames else None
         boundaries = buckets if buckets else []
         self._histogram = ray_metrics.Histogram(name=name,
@@ -302,7 +302,7 @@ class RayMetrics(Metrics):
     _histogram_cls: Type[prometheus_client.Histogram] = cast(
         Type[prometheus_client.Histogram], _RayHistogramWrapper)
 
-    def __init__(self, labelnames: List[str], vllm_config: VllmConfig):
+    def __init__(self, labelnames: list[str], vllm_config: VllmConfig):
         if ray_metrics is None:
             raise ImportError("RayMetrics requires Ray to be installed.")
         super().__init__(labelnames, vllm_config)
@@ -312,14 +312,14 @@ class RayMetrics(Metrics):
         pass
 
 
-def build_buckets(mantissa_lst: List[int], max_value: int) -> List[int]:
+def build_buckets(mantissa_lst: list[int], max_value: int) -> list[int]:
     """
     Builds a list of buckets with increasing powers of 10 multiplied by
     mantissa values until the value exceeds the specified maximum.
 
     """
     exponent = 0
-    buckets: List[int] = []
+    buckets: list[int] = []
     while True:
         for m in mantissa_lst:
             value = m * 10**exponent
@@ -330,7 +330,7 @@ def build_buckets(mantissa_lst: List[int], max_value: int) -> List[int]:
         exponent += 1
 
 
-def build_1_2_5_buckets(max_value: int) -> List[int]:
+def build_1_2_5_buckets(max_value: int) -> list[int]:
     """
     Example:
     >>> build_1_2_5_buckets(100)
@@ -339,7 +339,7 @@ def build_1_2_5_buckets(max_value: int) -> List[int]:
     return build_buckets([1, 2, 5], max_value)
 
 
-def build_1_2_3_5_8_buckets(max_value: int) -> List[int]:
+def build_1_2_3_5_8_buckets(max_value: int) -> list[int]:
     """
     Example:
     >>> build_1_2_3_5_8_buckets(100)
@@ -354,7 +354,7 @@ def local_interval_elapsed(now: float, last_log: float,
     return elapsed_time > local_interval
 
 
-def get_throughput(tracked_stats: List[int], now: float,
+def get_throughput(tracked_stats: list[int], now: float,
                    last_log: float) -> float:
     return float(np.sum(tracked_stats) / (now - last_log))
 
@@ -436,7 +436,7 @@ class PrometheusStatLogger(StatLoggerBase):
     _metrics_cls = Metrics
     _gauge_cls = prometheus_client.Gauge
 
-    def __init__(self, local_interval: float, labels: Dict[str, str],
+    def __init__(self, local_interval: float, labels: dict[str, str],
                  vllm_config: VllmConfig) -> None:
         super().__init__(local_interval, vllm_config)
         # Prometheus metrics
@@ -463,13 +463,13 @@ class PrometheusStatLogger(StatLoggerBase):
         for label, count in data.items():
             counter.labels(**{**self.labels, label_key: label}).inc(count)
 
-    def _log_histogram(self, histogram, data: Union[List[int],
-                                                    List[float]]) -> None:
+    def _log_histogram(self, histogram, data: Union[list[int],
+                                                    list[float]]) -> None:
         # Convenience function for logging list to histogram.
         for datum in data:
             histogram.labels(**self.labels).observe(datum)
 
-    def _log_gauge_string(self, gauge, data: Dict[str, str]) -> None:
+    def _log_gauge_string(self, gauge, data: dict[str, str]) -> None:
         gauge.labels(**data).set_to_current_time()
 
     def _log_prometheus(self, stats: Stats) -> None:

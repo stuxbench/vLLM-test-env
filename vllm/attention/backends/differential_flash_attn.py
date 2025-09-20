@@ -4,7 +4,7 @@
 from collections import defaultdict
 from dataclasses import dataclass
 from itertools import accumulate
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Type
+from typing import TYPE_CHECKING, Any, Optional, Type
 
 import torch
 from einops import rearrange
@@ -44,7 +44,7 @@ class DifferentialFlashAttentionBackend(AttentionBackend):
     accept_output_buffer = False
 
     @staticmethod
-    def get_supported_head_sizes() -> List[int]:
+    def get_supported_head_sizes() -> list[int]:
         return [32, 64, 96, 128, 160, 192, 224, 256]
 
     @staticmethod
@@ -53,7 +53,7 @@ class DifferentialFlashAttentionBackend(AttentionBackend):
         block_size: int,
         num_kv_heads: int,
         head_size: int,
-    ) -> Tuple[int, ...]:
+    ) -> tuple[int, ...]:
         if block_size % 16 != 0:
             raise ValueError("Block size must be a multiple of 16.")
         assert num_kv_heads % 2 == 0, "num_kv_heads must be divisible by 2"
@@ -94,7 +94,7 @@ class DifferentialFlashAttentionBackend(AttentionBackend):
 
     @staticmethod
     def copy_blocks(
-        kv_caches: List[torch.Tensor],
+        kv_caches: list[torch.Tensor],
         src_to_dists: torch.Tensor,
     ) -> None:
         key_caches = [kv_cache[0] for kv_cache in kv_caches]
@@ -114,7 +114,7 @@ class DifferentialFlashAttentionMetadata(AttentionMetadata):
     """
     # (batch_size,). The sequence length per sequence. Sequence length means
     # the computed tokens + new tokens None if it is a decoding.
-    seq_lens: Optional[List[int]]
+    seq_lens: Optional[list[int]]
     # seq_lens stored as a tensor.
     seq_lens_tensor: Optional[torch.Tensor]
 
@@ -173,7 +173,7 @@ class DifferentialFlashAttentionMetadata(AttentionMetadata):
     # Begin encoder attn & enc/dec cross-attn fields...
 
     # Encoder sequence lengths representation
-    encoder_seq_lens: Optional[List[int]] = None
+    encoder_seq_lens: Optional[list[int]] = None
     encoder_seq_lens_tensor: Optional[torch.Tensor] = None
     # (batch_size + 1,). The cumulative sequence lengths of the sequences in
     # the batch, used to index into sequence. E.g., if the sequence length is
@@ -336,13 +336,13 @@ class DifferentialFlashAttentionMetadataBuilder(
         self.block_size = input_builder.block_size
 
     def prepare(self):
-        self.slot_mapping: List[int] = []
-        self.prefill_seq_lens: List[int] = []
-        self.context_lens: List[int] = []
-        self.block_tables: List[List[int]] = []
-        self.cross_layer_shared_block_tables: List[List[int]] = []
-        self.curr_seq_lens: List[int] = []
-        self.multimodal_placeholder_maps: Dict[
+        self.slot_mapping: list[int] = []
+        self.prefill_seq_lens: list[int] = []
+        self.context_lens: list[int] = []
+        self.block_tables: list[list[int]] = []
+        self.cross_layer_shared_block_tables: list[list[int]] = []
+        self.curr_seq_lens: list[int] = []
+        self.multimodal_placeholder_maps: dict[
             str,
             MultiModalPlaceholderMap] = defaultdict(MultiModalPlaceholderMap)
         self.num_prefills = 0
@@ -428,7 +428,7 @@ class DifferentialFlashAttentionMetadataBuilder(
                                  self.block_size, inter_data.block_tables)
 
     def _get_graph_runner_block_tables(self, num_seqs: int,
-                                       block_tables: List[List[int]],
+                                       block_tables: list[list[int]],
                                        graph_block_tables) -> torch.Tensor:
         # The shape of graph_block_tables is
         # [max batch size, max context len // block size].
@@ -453,7 +453,7 @@ class DifferentialFlashAttentionMetadataBuilder(
         return torch.from_numpy(graph_block_tables).to(
             device=self.runner.device, non_blocking=True)
 
-    def build(self, seq_lens: List[int], query_lens: List[int],
+    def build(self, seq_lens: list[int], query_lens: list[int],
               cuda_graph_pad_size: int, batch_size: int):
         """Build attention metadata with on-device tensors.
 
@@ -590,14 +590,14 @@ class DifferentialFlashAttentionImpl(AttentionImpl):
         head_size: int,
         scale: float,
         num_kv_heads: int,
-        alibi_slopes: Optional[List[float]],
+        alibi_slopes: Optional[list[float]],
         sliding_window: Optional[int],
         kv_cache_dtype: str,
         logits_soft_cap: Optional[float] = None,
         attn_type: str = AttentionType.DECODER,
         kv_sharing_target_layer_name: Optional[str] = None,
         use_irope: bool = False,
-        differential_flash_attention_config: Optional[Dict[str, Any]] = None,
+        differential_flash_attention_config: Optional[dict[str, Any]] = None,
     ) -> None:
         if differential_flash_attention_config is None:
             differential_flash_attention_config = {}

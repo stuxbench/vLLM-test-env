@@ -5,7 +5,7 @@ import asyncio
 import time
 import weakref
 from functools import partial
-from typing import (Any, AsyncGenerator, Callable, Dict, Iterable, List,
+from typing import (Any, AsyncGenerator, Callable, Iterable, 
                     Mapping, Optional, Set, Tuple, Type, Union)
 from weakref import ReferenceType
 
@@ -123,9 +123,9 @@ class RequestTracker:
     """Synchronous abstraction for tracking requests."""
 
     def __init__(self) -> None:
-        self._request_streams: Dict[str, AsyncStream] = {}
+        self._request_streams: dict[str, AsyncStream] = {}
         self._aborted_requests: asyncio.Queue[str] = asyncio.Queue()
-        self._new_requests: asyncio.Queue[Tuple[AsyncStream,
+        self._new_requests: asyncio.Queue[tuple[AsyncStream,
                                                 dict]] = asyncio.Queue()
         self.new_requests_event = asyncio.Event()
 
@@ -220,11 +220,11 @@ class RequestTracker:
         if stream is not None:
             stream.finish(exception=exception)
 
-    def get_new_and_aborted_requests(self) -> Tuple[List[Dict], Set[str]]:
+    def get_new_and_aborted_requests(self) -> tuple[list[Dict], set[str]]:
         """Get the new requests and finished requests to be
         sent to the engine."""
-        new_requests: List[Dict] = []
-        finished_requests: Set[str] = set()
+        new_requests: list[Dict] = []
+        finished_requests: set[str] = set()
 
         while not self._aborted_requests.empty():
             request_id = self._aborted_requests.get_nowait()
@@ -258,7 +258,7 @@ class _AsyncLLMEngine(LLMEngine):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    async def step_async(self, virtual_engine: int) -> List[RequestOutput]:
+    async def step_async(self, virtual_engine: int) -> list[RequestOutput]:
         """Performs one decoding iteration and returns newly generated results.
         The workers are ran asynchronously if possible.
 
@@ -556,7 +556,7 @@ class AsyncLLMEngine(EngineClient):
         engine_args: AsyncEngineArgs,
         start_engine_loop: bool = True,
         usage_context: UsageContext = UsageContext.ENGINE_CONTEXT,
-        stat_loggers: Optional[Dict[str, StatLoggerBase]] = None,
+        stat_loggers: Optional[dict[str, StatLoggerBase]] = None,
     ) -> "AsyncLLMEngine":
         """Creates an async LLM engine from the engine arguments."""
 
@@ -970,7 +970,7 @@ class AsyncLLMEngine(EngineClient):
     async def do_log_stats(
             self,
             scheduler_outputs: Optional[SchedulerOutputs] = None,
-            model_output: Optional[List[SamplerOutput]] = None) -> None:
+            model_output: Optional[list[SamplerOutput]] = None) -> None:
         self.engine.do_log_stats()
 
     async def check_health(self) -> None:

@@ -4,7 +4,7 @@
 import gc
 import os
 from contextlib import nullcontext
-from typing import Dict, List, Optional, Set, Tuple, Type, Union
+from typing import Optional, Type, Union
 
 import torch
 import torch.distributed
@@ -92,12 +92,12 @@ class Worker(LocalOrDistributedWorkerBase):
 
         # Uninitialized cache engine. Will be initialized by
         # initialize_cache.
-        self.cache_engine: List[CacheEngine]
-        self.gpu_cache: Optional[List[List[torch.Tensor]]] = None
-        self._seq_group_metadata_cache: Dict[str, SequenceGroupMetadata] = {}
+        self.cache_engine: list[CacheEngine]
+        self.gpu_cache: Optional[list[list[torch.Tensor]]] = None
+        self._seq_group_metadata_cache: dict[str, SequenceGroupMetadata] = {}
 
         # Buffers saved before sleep
-        self._sleep_saved_buffers: Dict[str, torch.Tensor] = {}
+        self._sleep_saved_buffers: dict[str, torch.Tensor] = {}
 
         # Torch profiler. Enabled and configured through env vars:
         # VLLM_TORCH_PROFILER_DIR=/path/to/save/trace
@@ -287,7 +287,7 @@ class Worker(LocalOrDistributedWorkerBase):
         return self.available_kv_cache_memory
 
     @torch.inference_mode()
-    def determine_num_available_blocks(self) -> Tuple[int, int]:
+    def determine_num_available_blocks(self) -> tuple[int, int]:
         """Profiles the peak memory usage of the model to determine how many
         KV blocks may be allocated without OOMs.
 
@@ -471,7 +471,7 @@ class Worker(LocalOrDistributedWorkerBase):
         return self.parallel_config.tensor_parallel_size > 1
 
     @property
-    def kv_cache(self) -> Optional[List[List[torch.Tensor]]]:
+    def kv_cache(self) -> Optional[list[list[torch.Tensor]]]:
         return self.gpu_cache
 
     @torch.inference_mode()
@@ -522,9 +522,9 @@ class Worker(LocalOrDistributedWorkerBase):
 
     def _get_cached_seq_group_metadata(
             self,
-            seq_group_metadata_list: List[Union[SequenceGroupMetadata,
+            seq_group_metadata_list: list[Union[SequenceGroupMetadata,
                                                 SequenceGroupMetadataDelta]],
-            finished_request_ids: List[str]) -> List[SequenceGroupMetadata]:
+            finished_request_ids: list[str]) -> list[SequenceGroupMetadata]:
         """Return a list of cached Sequence Group Metadata after updating its
         state.
 
@@ -565,7 +565,7 @@ class Worker(LocalOrDistributedWorkerBase):
         self,
         execute_model_req: ExecuteModelRequest,
         intermediate_tensors: Optional[IntermediateTensors] = None,
-    ) -> Optional[List[SamplerOutput]]:
+    ) -> Optional[list[SamplerOutput]]:
         if execute_model_req is not None:
             new_seq_group_metadata_list = self._get_cached_seq_group_metadata(
                 execute_model_req.seq_group_metadata_list,
@@ -586,7 +586,7 @@ class Worker(LocalOrDistributedWorkerBase):
     def pin_lora(self, lora_id: int) -> bool:
         return self.model_runner.pin_lora(lora_id)
 
-    def list_loras(self) -> Set[int]:
+    def list_loras(self) -> set[int]:
         return self.model_runner.list_loras()
 
     @property

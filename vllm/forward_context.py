@@ -226,9 +226,9 @@ class ForwardContext:
     no_compile_layers: dict[str, Any]
     """
     Type AttentionMetadata for v0, 
-    Type Dict[str, AttentionMetadata] for v1, map from layer_name of each 
+    Type dict[str, AttentionMetadata] for v1, map from layer_name of each 
     attention layer to its attention metadata
-    Type List[Dict[str, AttentionMetadata]] for DBO. List of size two, one
+    Type list[dict[str, AttentionMetadata]] for DBO. List of size two, one
     for each microbatch.
     Set dynamically for each forward pass
     """

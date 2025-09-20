@@ -5,7 +5,7 @@ VulnerabilityFixedGrader checks if vuln was patched or not 1/0.
 """
 
 import subprocess
-from typing import Dict, Tuple, Optional
+from typing import Optional
 
 from .spec import EnvironmentState, Grade, SubGrade, Grader
 
@@ -22,7 +22,7 @@ class VulnerabilityFixedGrader(Grader):
         state: EnvironmentState,
         test_patch_file: str,
         working_dir: str = "/build/minio"
-    ) -> Tuple[float, Dict]:
+    ) -> tuple[float, dict]:
         """
         Apply test patch and check if tests pass
         

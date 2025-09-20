@@ -1272,7 +1272,7 @@ def cli_config_file_with_model():
 
 
 class AssetHandler(http.server.BaseHTTPRequestHandler):
-    # _IMAGE_CACHE : Dict[str, bytes] = {}
+    # _IMAGE_CACHE : dict[str, bytes] = {}
 
     def log_message(self, *args, **kwargs):
         pass

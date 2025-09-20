@@ -30,7 +30,7 @@ def _query_start_loc_to_chunk_indices_offsets(
         total_seqlens (int): The total number of tokens in the batch.
 
     Returns:
-        Tuple[torch.Tensor, torch.Tensor]: A tuple containing:
+        tuple[torch.Tensor, torch.Tensor]: A tuple containing:
             - chunk_indices (torch.Tensor): 1D tensor of indices 
                 indicating the physical chunk for each logical chunk.
             - chunk_offsets (torch.Tensor): 1D tensor of offsets

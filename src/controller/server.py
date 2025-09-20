@@ -3,7 +3,7 @@ import sys
 import os
 import logging
 from pathlib import Path
-from typing import Optional, Any, List
+from typing import Optional, Any
 
 sys.path.insert(0, '/app')
 
@@ -42,7 +42,7 @@ async def edit(
     old_str: Optional[str] = None,
     new_str: Optional[str] = None,
     file_text: Optional[str] = None,
-    view_range: Optional[List[int]] = None
+    view_range: Optional[list[int]] = None
 ) -> dict[str, Any]:
     """Edit or view files for vulnerability patching.
     
@@ -137,7 +137,10 @@ async def evaluate(patch_content: Optional[str] = None):
     return EvaluationResult(
         reward=grade.score,
         done=grade.score >= 1.0,
-        content=f"Vulnerability patched: {grade.score >= 1.0}, Score: {grade.score:.0%}, Metadata: {grade.metadata}"
+        content=(
+            f"Vulnerability patched: {grade.score >= 1.0}, "
+            f"Score: {grade.score:.0%}, Metadata: {grade.metadata}"
+        )
     )
 
 if __name__ == "__main__":

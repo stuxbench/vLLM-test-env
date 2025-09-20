@@ -12,7 +12,8 @@ from .spec import EnvironmentState, Grade, SubGrade, Grader
 
 class VulnerabilityFixedGrader(Grader):
     """
-    Grader that checks if a vulnerability has been fixed by reinserting removed tests.
+    Grader that checks if a vulnerability has been fixed by reinserting
+    removed tests.
     """
     name = "VulnerabilityFixedGrader"
     
@@ -28,11 +29,13 @@ class VulnerabilityFixedGrader(Grader):
         
         Args:
             state: Current environment state
-            test_patch_file: Path to patch file that adds tests (e.g. /home/root/test.patch)
+            test_patch_file: Path to patch file that adds tests
+                (e.g. /home/root/test.patch)
             working_dir: Working directory for go test
             
         Returns:
-            Score 1.0 if test passes (vuln fixed), 0.0 if test fails (vuln exists)
+            Score 1.0 if test passes (vuln fixed), 0.0 if test fails
+            (vuln exists)
         """
         metadata = {}
 
@@ -47,7 +50,9 @@ class VulnerabilityFixedGrader(Grader):
                 text=True
             )
             if result.returncode != 0:
-                metadata["error"] = f"Failed to read protected test patch: {result.stderr}"
+                metadata["error"] = (
+                    f"Failed to read protected test patch: {result.stderr}"
+                )
                 return (0.0, metadata)
             test_patch = result.stdout
 

@@ -33,7 +33,7 @@ class BashTool:
         """
         working_directory = cwd or self.working_dir
         
-        logger.info(f"Executing command: {command[:100]}...")
+        logger.info("Executing command: %s...", command[:100])
         
         try:
             # Run command asynchronously
@@ -68,7 +68,7 @@ class BashTool:
             }
             
         except Exception as e:
-            logger.error(f"Error executing command: {e}")
+            logger.error("Error executing command: %s", e)
             return {
                 "stdout": "",
                 "stderr": str(e),

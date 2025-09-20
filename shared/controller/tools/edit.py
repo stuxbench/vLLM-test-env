@@ -2,14 +2,17 @@
 
 import logging
 from pathlib import Path
-from typing import Any, Optional, List 
+from typing import Any, Optional
 from enum import Enum
 
 logger = logging.getLogger(__name__)
 
 # max response length to prevent files too long
 MAX_RESPONSE_LEN = 16000
-TRUNCATED_MESSAGE = "\n<response clipped>\nNOTE: File was too large and has been truncated. Use view_range to see specific sections."
+TRUNCATED_MESSAGE = (
+    "\n<response clipped>\nNOTE: File was too large and has been "
+    "truncated. Use view_range to see specific sections."
+)
 
 
 class EditCommand(Enum):
@@ -32,7 +35,7 @@ class EditTool:
         old_str: Optional[str] = None,
         new_str: Optional[str] = None,
         file_text: Optional[str] = None,
-        view_range: Optional[List[int]] = None
+        view_range: Optional[list[int]] = None
     ) -> dict[str, Any]:
         """
         Execute an edit command.
@@ -61,10 +64,10 @@ class EditTool:
                 return {"error": f"Unknown command: {command}"}
                 
         except Exception as e:
-            logger.error(f"Error executing edit command: {e}")
+            logger.error("Error executing edit command: %s", e)
             return {"error": str(e)}
     
-    async def _view_file(self, file_path: Path, view_range: Optional[List[int]] = None) -> dict[str, Any]:
+    async def _view_file(self, file_path: Path, view_range: Optional[list[int]] = None) -> dict[str, Any]:
         """View file contents."""
         if not file_path.exists():
             raise FileNotFoundError(f"File not found: {file_path}")

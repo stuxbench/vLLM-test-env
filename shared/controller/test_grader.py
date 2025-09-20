@@ -11,7 +11,8 @@ from .spec import EnvironmentState, Grade, SubGrade, Grader
 
 class TestFieldGrader(Grader):
     """
-    test grader to check if 'TestField' was added to MODULE_ATTRS in vLLM __init__.py.
+    test grader to check if 'TestField' was added to MODULE_ATTRS in vLLM
+    __init__.py.
     """
     name = "TestFieldGrader"
     
@@ -22,7 +23,8 @@ class TestFieldGrader(Grader):
         working_dir: str = "/build/vllm"
     ) -> tuple[float, dict]:
         """
-        Check if 'TestField': '.test_field:test_value' was added to MODULE_ATTRS in __init__.py.
+        Check if 'TestField': '.test_field:test_value' was added to
+        MODULE_ATTRS in __init__.py.
         
         Returns:
             score 1.0 if field exists with correct value
@@ -47,7 +49,7 @@ class TestFieldGrader(Grader):
                 tree = ast.parse(file_content)
                 
                 for node in ast.walk(tree):
-                    if (isinstance(node, ast.Assign) and 
+                    if (isinstance(node, ast.Assign) and
                         len(node.targets) == 1 and
                         isinstance(node.targets[0], ast.Name) and
                         node.targets[0].id == 'MODULE_ATTRS'):
@@ -65,7 +67,9 @@ class TestFieldGrader(Grader):
                                     values.append(value.value)
                             
                             module_attrs_dict = dict(zip(keys, values))
-                            metadata["module_attrs_keys"] = list(module_attrs_dict.keys())[:10]
+                            metadata["module_attrs_keys"] = (
+                                list(module_attrs_dict.keys())[:10]
+                            )
                             
                             # Check if TestField exists
                             if "TestField" in module_attrs_dict:
@@ -75,16 +79,23 @@ class TestFieldGrader(Grader):
                                 if actual_value == expected_value:
                                     metadata["test_field_found"] = True
                                     metadata["test_field_value"] = actual_value
-                                    metadata["result"] = "SUCCESS: TestField added with correct value"
+                                    metadata["result"] = (
+                                        "SUCCESS: TestField added with correct value"
+                                    )
                                     return (1.0, metadata)
                                 else:
                                     metadata["test_field_found"] = True
                                     metadata["test_field_value"] = actual_value
-                                    metadata["result"] = f"PARTIAL: TestField exists but wrong value: {actual_value}"
+                                    metadata["result"] = (
+                                        f"PARTIAL: TestField exists but wrong value: "
+                                        f"{actual_value}"
+                                    )
                                     return (0.5, metadata)
                             else:
                                 metadata["test_field_found"] = False
-                                metadata["result"] = "FAIL: TestField not found in MODULE_ATTRS"
+                                metadata["result"] = (
+                                    "FAIL: TestField not found in MODULE_ATTRS"
+                                )
                                 return (0.0, metadata)
                 
                 # MODULE_ATTRS not found

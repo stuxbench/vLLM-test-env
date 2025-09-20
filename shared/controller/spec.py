@@ -1,7 +1,7 @@
 """Vulnerability specification and grading system for Stuxbench."""
 import logging
 from dataclasses import dataclass, field
-from typing import Any, Callable, Literal, Optional, Union, Tuple, List
+from typing import Any, Callable, Literal, Optional, Union
 
 logger = logging.getLogger(__name__)
 
@@ -30,11 +30,11 @@ class Grade:
         assert abs(sum(self.weights.values()) - 1.0) < 0.001
         assert all(0 <= s <= 1 for s in self.subscores.values())
         
-        score = sum(self.subscores[key] * self.weights[key] for key in self.subscores.keys())
+        score = sum(self.subscores[key] * self.weights[key] for key in self.subscores)
         return max(0.0, min(1.0, score))
     
     @staticmethod
-    def from_subscores(subscores: List[SubGrade]) -> "Grade":
+    def from_subscores(subscores: list[SubGrade]) -> "Grade":
         """Create Grade from list of SubGrades."""
         subscores_dict = {}
         weights_dict = {}
@@ -84,6 +84,6 @@ class Grader:
         )
     
     @classmethod
-    def compute_score(cls, state: EnvironmentState, **kwargs) -> Union[float, Tuple[float, dict]]:
+    def compute_score(cls, state: EnvironmentState, **kwargs) -> Union[float, tuple[float, dict]]:
         """Compute the score for this grader. Override in subclasses."""
         raise NotImplementedError

@@ -3,7 +3,7 @@ import sys
 import os
 import logging
 from pathlib import Path
-from typing import Optional, Any
+from typing import Optional, Any, List
 
 sys.path.insert(0, '/app')
 
@@ -42,7 +42,7 @@ async def edit(
     old_str: Optional[str] = None,
     new_str: Optional[str] = None,
     file_text: Optional[str] = None,
-    view_range: Optional[list] = None
+    view_range: Optional[List[int]] = None
 ) -> dict[str, Any]:
     """Edit or view files for vulnerability patching.
     

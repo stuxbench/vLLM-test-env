@@ -13,7 +13,7 @@ ENV GITHUB_TOKEN_BASE64="place personal github token here"
 ENV GITHUB_USERNAME="place github username here"
 WORKDIR /build
 RUN GITHUB_TOKEN=$(echo "$GITHUB_TOKEN_BASE64" | base64 -d); \
-    git clone https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/stuxbench/vLLM-test-env vllm
+    git clone https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/stuxbench/vLLM-clone vllm
 
 WORKDIR /build/vllm
 
